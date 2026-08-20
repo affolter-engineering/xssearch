@@ -1,0 +1,30 @@
+# Rust / Cargo
+target/
+
+# Nix
+result
+result-*
+.direnv/
+
+# IDE / editors
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+
+# xssearch output files
+*.json
+!package.json
+
+# Credentials / secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# OS
+Thumbs.db
