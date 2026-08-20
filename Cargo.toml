@@ -1,6 +1,6 @@
 [package]
 name = "xssearch"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 description = "Advanced XSS detection tool"
 authors = ["Fabian Affolter <fabian@affolter-engineering.ch>"]
