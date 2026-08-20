@@ -17,6 +17,7 @@ This tool was inspired my XSStrike and XSSER.
 - **DOM XSS analysis**  - static inspection of `innerHTML`, `eval`, `document.write`, `location.href`, jQuery `.html()`, and other dangerous sinks with source detection
 - **Payload encoding**  - URL, double-URL, HTML entity, Unicode and base64/eval encoding with composable flags
 - **JSON output**  - structured findings for integration with other tooling
+- **Markdown report**  - human-readable report with a severity summary table, per-finding detail sections, and a quick-reference table; ready to paste into a wiki or attach to a ticket
 - **Pure Rust/rustls**  - no OpenSSL dependency; single static-ish binary
 
 ## Installation
@@ -79,7 +80,8 @@ xssearch [OPTIONS] <--url <URL> | --file <URLS_FILE>>
 | `--suffix <STR>` | Append string to every payload |
 | `--waf-detect` | Fingerprint WAF before scanning |
 | `--waf-bypass` | Apply WAF bypass transforms to payloads |
-| `-o, --output <FILE>` | Write findings to JSON file |
+| `--output-json <FILE>` | Write findings to JSON file |
+| `--output-md <FILE>` | Write findings to Markdown file |
 | `-v, --verbose` | Verbose output (show context, all probes) |
 
 
@@ -122,10 +124,22 @@ xssearch -u "https://example.com/contact" -d "msg=FUZZ" \
 xssearch -u "https://example.com/app" --dom --no-banner
 ```
 
-#### Scan a list of URLs and save JSON results
+#### Save results as JSON
 
 ```bash
-xssearch -f targets.txt --crawl --waf-detect -o results.json
+xssearch -u "https://example.com/?q=test" --output-json results.json
+```
+
+#### Save results as Markdown
+
+```bash
+xssearch -u "https://example.com/?q=test" --output-md report.md
+```
+
+#### Save both formats at once
+
+```bash
+xssearch -f targets.txt --crawl --waf-detect --output-json results.json --output-md report.md
 ```
 
 #### Proxy through Burp Suite
@@ -231,7 +245,7 @@ xssearch -u "http://testphp.vulnweb.com/" \
   --crawl --crawl-depth 3 \
   --headers-inject \
   --dom \
-  -o testphp-findings.json
+  --output-json testphp-findings.json
 ```
 
 #### IBM Altoro Mutual
@@ -251,7 +265,7 @@ Crawl from root:
 xssearch -u "http://zero.webappsecurity.com/" \
   --crawl --crawl-depth 2 \
   --waf-detect \
-  -o zero-findings.json
+  --output-json zero-findings.json
 ```
 
 #### Google Gruyere
@@ -281,7 +295,9 @@ Terminal output uses color-coded labels:
 | `[DOM]` | DOM sink detected |
 | `[Blind]` | Blind payload injected |
 
-JSON output schema (one object per finding):
+### JSON
+
+One object per finding, written with `--output-json`:
 
 ```json
 {
@@ -294,6 +310,43 @@ JSON output schema (one object per finding):
   "description": "attr breakout dquote onmouseover"
 }
 ```
+
+### Markdown
+
+Written with `--output-md`, the report contains three sections:
+
+**Summary table** — severity counts at a glance:
+
+| Severity | Count |
+| --- | --- |
+| 🔴 High | 2 |
+| 🟠 Medium | 0 |
+| 🟡 Low | 0 |
+| 🔵 Info | 0 |
+| **Total** | **2** |
+
+**Per-finding sections** — one heading per finding with a detail table and the payload in a fenced code block:
+
+```markdown
+### 1. 🔴 [High] `q`
+
+| Field | Value |
+| --- | --- |
+| **URL** | `https://example.com/...` |
+| **Parameter** | `q` |
+| **Method** | `GET` |
+| **Severity** | 🔴 High |
+| **Context** | `Attribute` |
+| **Description** | attr breakout dquote onmouseover |
+
+**Payload**
+
+​```html
+" onmouseover=alert(1) "
+​```
+```
+
+**Quick-reference table** — all findings in one flat table for easy scanning and copy-paste into tickets.
 
 ## Reflection contexts
 

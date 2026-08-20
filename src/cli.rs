@@ -90,8 +90,11 @@ pub struct Args {
     pub waf_bypass: bool,
 
     // Output
-    #[arg(short = 'o', long, help = "Output file (JSON)")]
-    pub output: Option<String>,
+    #[arg(long, help = "Output file (JSON)")]
+    pub output_json: Option<String>,
+
+    #[arg(long, help = "Output file (Markdown)")]
+    pub output_md: Option<String>,
 
     #[arg(short = 'v', long, help = "Verbose output")]
     pub verbose: bool,

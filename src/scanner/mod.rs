@@ -78,9 +78,14 @@ impl Scanner {
         let reporter = Reporter::new(&findings, self.args.verbose);
         reporter.print_summary();
 
-        if let Some(out) = &self.args.output {
+        if let Some(out) = &self.args.output_json {
             reporter.write_json(out)?;
             println!("\n{} Results written to {}", "[Output]".green(), out);
+        }
+
+        if let Some(out) = &self.args.output_md {
+            reporter.write_markdown(out)?;
+            println!("\n{} Markdown report written to {}", "[Output]".green(), out);
         }
 
         Ok(())
