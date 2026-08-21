@@ -2,23 +2,23 @@
 
 Advanced XSS detection tool written in Rust, combining context-aware payload intelligence with the injection breadth.
 
-This tool was inspired my XSStrike and XSSER.
+This tool was inspired XSStrike and XSSER.
 
 > **Warning**: Only use against systems you own or have explicit written authorization to test.
 
 ## Features
 
-- **Context-aware scanning**  - probes each parameter first, detects where the value reflects (HTML body, attribute, JavaScript, comment, `<title>`, `<textarea>`, etc.) and selects the most appropriate payloads for that context rather than blindly firing everything
-- **100+ built-in payloads**  - HTML tags, attribute breakouts, JS injection, polyglots, DOM sinks, WAF bypass variants
-- **WAF detection & bypass**  - fingerprints Cloudflare, ModSecurity, Sucuri, Imperva, Akamai, AWS WAF, F5 BIG-IP, Barracuda, Wordfence; applies per-WAF bypass transforms (case mutation, comment insertion, zero-width characters and encoding)
-- **Crawler**  - spiders links and forms to discover injectable parameters automatically
-- **Header & cookie injection**  - tests `Referer`, `User-Agent`, `X-Forwarded-For`, `X-Real-IP`, and other headers, plus cookie values
-- **Blind XSS**  - injects out-of-band callback payloads (compatible with Burp Collaborator, interactsh) into every sink for deferred execution scenarios (admin panels, log viewers and alike)
-- **DOM XSS analysis**  - static inspection of `innerHTML`, `eval`, `document.write`, `location.href`, jQuery `.html()`, and other dangerous sinks with source detection
-- **Payload encoding**  - URL, double-URL, HTML entity, Unicode and base64/eval encoding with composable flags
-- **JSON output**  - structured findings for integration with other tooling
-- **Markdown report**  - human-readable report with a severity summary table, per-finding detail sections, and a quick-reference table; ready to paste into a wiki or attach to a ticket
-- **Pure Rust/rustls**  - no OpenSSL dependency; single static-ish binary
+- **Context-aware scanning** - probes each parameter first, detects where the value reflects (HTML body, attribute, JavaScript, comment, `<title>`, `<textarea>`, etc.) and selects the most appropriate payloads for that context rather than blindly firing everything
+- **100+ built-in payloads** - HTML tags, attribute breakouts, JS injection, polyglots, DOM sinks, WAF bypass variants
+- **WAF detection & bypass** - fingerprints Cloudflare, ModSecurity, Sucuri, Imperva, Akamai, AWS WAF, F5 BIG-IP, Barracuda, Wordfence; applies per-WAF bypass transforms (case mutation, comment insertion, zero-width characters and encoding)
+- **Crawler** - spiders links and forms to discover injectable parameters automatically
+- **Header & cookie injection** - tests `Referer`, `User-Agent`, `X-Forwarded-For`, `X-Real-IP`, and other headers, plus cookie values
+- **Blind XSS** - injects out-of-band callback payloads (compatible with Burp Collaborator, interactsh) into every sink for deferred execution scenarios (admin panels, log viewers and alike)
+- **DOM XSS analysis** - static inspection of `innerHTML`, `eval`, `document.write`, `location.href`, jQuery `.html()`, and other dangerous sinks with source detection
+- **Payload encoding** - URL, double-URL, HTML entity, Unicode and base64/eval encoding with composable flags
+- **JSON output** - structured findings for integration with other tooling
+- **Markdown report** - human-readable report with a severity summary table, per-finding detail sections, and a quick-reference table; ready to paste into a wiki or attach to a ticket
+- **Pure Rust/rustls** - no OpenSSL dependency; single static-ish binary
 
 ## Installation
 
@@ -83,7 +83,6 @@ xssearch [OPTIONS] <--url <URL> | --file <URLS_FILE>>
 | `--output-json <FILE>` | Write findings to JSON file |
 | `--output-md <FILE>` | Write findings to Markdown file |
 | `-v, --verbose` | Verbose output (show context, all probes) |
-
 
 ### Examples
 
