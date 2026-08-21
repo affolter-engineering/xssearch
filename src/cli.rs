@@ -67,7 +67,7 @@ pub struct Args {
     pub fuzz: bool,
 
     // Payload options
-    #[arg(long, default_value = "all", help = "Payload set: all | html | js | attr | poly | dom")]
+    #[arg(long, default_value = "all", help = "Payload set: all | html | js | attr | poly | dom | mxss | waf")]
     pub payload_set: String,
 
     #[arg(long, help = "Custom payload file (one per line)")]

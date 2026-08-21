@@ -73,7 +73,7 @@ xssearch [OPTIONS] <--url <URL> | --file <URLS_FILE>>
 | `--blind <URL>` | Blind XSS callback URL |
 | `--dom` | Static DOM XSS sink analysis |
 | `--fuzz` | Fire all payloads regardless of reflection context |
-| `--payload-set <SET>` | `all` \| `html` \| `js` \| `attr` \| `poly` \| `dom` (default: all) |
+| `--payload-set <SET>` | `all` \| `html` \| `js` \| `attr` \| `poly` \| `dom` \| `mxss` \| `waf` (default: all) |
 | `--payloads-file <FILE>` | Custom payload file, one per line |
 | `--encode <LIST>` | Comma-separated encodings: `url,html,unicode,double,base64` |
 | `--prefix <STR>` | Prepend string to every payload |
