@@ -2,7 +2,14 @@
 
 Advanced XSS detection tool written in Rust, combining context-aware payload intelligence with the injection breadth.
 
-This tool was inspired XSStrike and XSSER.
+This tool was inspired XSStrike and XSSER. The payload was collected from different sources:
+
+- https://github.com/ardakocadoru/xss-cheatsheet
+- https://github.com/Proviesec/xss-payload-list
+- https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html
+- https://github.com/swisskyrepo/PayloadsAllTheThings
+
+Thanks guys, you are awesome ❤️
 
 > **Warning**: Only use against systems you own or have explicit written authorization to test.
 
