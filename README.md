@@ -83,6 +83,7 @@ xssearch [OPTIONS] <--url <URL> | --file <URLS_FILE>>
 | `--output-json <FILE>` | Write findings to JSON file |
 | `--output-md <FILE>` | Write findings to Markdown file |
 | `-v, --verbose` | Verbose output (show context, all probes) |
+| `-V, --version` | Print version and exit |
 
 ### Examples
 
