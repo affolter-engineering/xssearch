@@ -110,7 +110,6 @@ impl<'a> Reporter<'a> {
         // Header
         out.push_str("# XSSearch — Scan Report\n\n");
         out.push_str(&format!("**Generated:** {}\n\n", format_unix(now)));
-        out.push_str("> Only use against systems you own or have explicit written authorization to test.\n\n");
 
         // Summary table
         let high   = self.count(|f| matches!(f.severity, Severity::High));

@@ -19,12 +19,6 @@ async fn main() -> anyhow::Result<()> {
 
     if !args.no_banner {
         print_banner();
-        eprintln!(
-            "{}\n",
-            "WARNING: Only use against systems you own or have explicit written authorization to test."
-                .yellow()
-                .bold()
-        );
     }
 
     let scanner = Scanner::new(args).await?;
