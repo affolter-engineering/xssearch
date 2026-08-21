@@ -169,14 +169,14 @@ class H(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-http.server.HTTPServer(('127.0.0.1', 9191), H).serve_forever()
+http.server.HTTPServer(('127.0.0.1', 9999), H).serve_forever()
 EOF
 ```
 
 Then scan it:
 
 ```bash
-xssearch -u "http://127.0.0.1:9191/?q=test" -v
+xssearch -u "http://127.0.0.1:9999/?q=test" -v
 ```
 
 Expected output: `[VULN] XSS in 'q'` with an HTML-context payload.
