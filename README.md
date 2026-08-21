@@ -179,7 +179,7 @@ Then scan it:
 xssearch -u "http://127.0.0.1:9999/?q=test" -v
 ```
 
-Expected output: `[VULN] XSS in 'q'` with an HTML-context payload.
+Expected output: `[Vuln] XSS in 'q'` with an HTML-context payload.
 
 ### Local Docker targets
 
