@@ -345,7 +345,7 @@ Written with `--output-md`, the report contains three sections:
 ​```
 ```
 
-**Quick-reference table** — all findings in one flat table for easy scanning and copy-paste into tickets.
+**Quick-reference table** - all findings in one flat table for easy scanning and copy-paste into tickets.
 
 ## Reflection contexts
 
