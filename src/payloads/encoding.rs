@@ -33,17 +33,6 @@ pub fn unicode_encode(s: &str) -> String {
         .collect()
 }
 
-pub fn hex_encode_js(s: &str) -> String {
-    s.chars()
-        .map(|c| {
-            if c.is_ascii_alphanumeric() {
-                c.to_string()
-            } else {
-                format!("\\x{:02X}", c as u32)
-            }
-        })
-        .collect()
-}
 
 pub fn base64_encode(s: &str) -> String {
     STANDARD.encode(s)

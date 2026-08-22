@@ -23,7 +23,7 @@ const INJECTABLE_HEADERS: &[&str] = &[
 pub async fn test_headers(
     client: &HttpClient,
     url: &str,
-    verbose: bool,
+    _verbose: bool,
 ) -> Result<Vec<Finding>> {
     let mut findings = Vec::new();
     let payloads = html_payloads();
@@ -67,7 +67,7 @@ pub async fn test_cookies(
     client: &HttpClient,
     url: &str,
     cookie_str: &str,
-    verbose: bool,
+    _verbose: bool,
 ) -> Result<Vec<Finding>> {
     let mut findings = Vec::new();
     let payloads = html_payloads();

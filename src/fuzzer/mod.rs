@@ -1,4 +1,4 @@
-/// Fuzzer module  - generates param combinations and drives the scan engine.
+#![allow(dead_code)]
 
 use crate::{
     crawler::DiscoveredTarget,

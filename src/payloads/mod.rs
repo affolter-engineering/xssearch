@@ -1,5 +1,3 @@
-use rand::seq::SliceRandom;
-use rand::thread_rng;
 
 pub mod generator;
 pub mod encoding;
@@ -9,7 +7,6 @@ pub enum PayloadContext {
     Html,
     Attribute,
     JavaScript,
-    Url,
     Polyglot,
     Dom,
 }
@@ -323,6 +320,3 @@ pub fn get_payloads_for_set(set: &str) -> Vec<Payload> {
     }
 }
 
-pub fn shuffle_payloads(payloads: &mut Vec<Payload>) {
-    payloads.shuffle(&mut thread_rng());
-}

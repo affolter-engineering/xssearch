@@ -190,15 +190,16 @@ fn md_escape(s: &str) -> String {
 }
 
 fn format_unix(secs: u64) -> String {
-    // RFC 3339-like without pulling in chrono: YYYY-MM-DD HH:MM:SS UTC
-    let s = secs;
-    let (mut y, mut mo, mut d, mut h, mut mi, mut sec) = (1970u64, 1u64, 1u64, 0u64, 0u64, 0u64);
-    sec = s % 60; let s = s / 60;
-    mi  = s % 60; let s = s / 60;
-    h   = s % 24; let mut days = s / 24;
-    // rough Gregorian calculation
-    y = 1970 + days / 365;
+    let sec = secs % 60;
+    let s   = secs / 60;
+    let mi  = s % 60;
+    let s   = s / 60;
+    let h   = s % 24;
+    let mut days = s / 24;
+    let y = 1970 + days / 365;
     days %= 365;
+    let mut mo = 1u64;
+    let mut d  = 1u64;
     let months = [31u64, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     for (idx, &mlen) in months.iter().enumerate() {
         if days < mlen { mo = idx as u64 + 1; d = days + 1; break; }
