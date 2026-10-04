@@ -58,3 +58,71 @@ pub fn apply_encodings(payload: &str, encodings: &[&str]) -> Vec<String> {
     }
     results
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn url_encode_alphanumeric_passthrough() {
+        assert_eq!(url_encode("abc123"), "abc123");
+    }
+
+    #[test]
+    fn url_encode_special_chars() {
+        assert_eq!(url_encode("<>"), "%3C%3E");
+        assert_eq!(url_encode(" "), "%20");
+        assert_eq!(url_encode("="), "%3D");
+    }
+
+    #[test]
+    fn double_url_encode_nests() {
+        let once = url_encode("<");
+        let twice = url_encode(&once);
+        assert_eq!(double_url_encode("<"), twice);
+    }
+
+    #[test]
+    fn html_encode_produces_decimal_entities() {
+        let out = html_encode("A");
+        assert_eq!(out, "&#65;");
+        let out = html_encode("<>");
+        assert_eq!(out, "&#60;&#62;");
+    }
+
+    #[test]
+    fn base64_encode_known_value() {
+        assert_eq!(base64_encode("alert(1)"), "YWxlcnQoMSk=");
+    }
+
+    #[test]
+    fn base64_eval_wrap_format() {
+        let wrapped = base64_eval_wrap("alert(1)");
+        assert_eq!(wrapped, "eval(atob('YWxlcnQoMSk='))");
+    }
+
+    #[test]
+    fn apply_encodings_includes_original() {
+        let results = apply_encodings("<script>", &["url"]);
+        assert_eq!(results[0], "<script>");
+        assert_eq!(results.len(), 2);
+    }
+
+    #[test]
+    fn apply_encodings_unknown_enc_skipped() {
+        let results = apply_encodings("test", &["nonexistent"]);
+        assert_eq!(results, vec!["test"]);
+    }
+
+    #[test]
+    fn unicode_encode_leaves_alphanumeric() {
+        let out = unicode_encode("abc");
+        assert_eq!(out, "abc");
+    }
+
+    #[test]
+    fn unicode_encode_escapes_symbols() {
+        let out = unicode_encode("<");
+        assert_eq!(out, "\\u003C");
+    }
+}

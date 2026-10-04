@@ -320,3 +320,61 @@ pub fn get_payloads_for_set(set: &str) -> Vec<Payload> {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn all_payloads_nonempty() {
+        assert!(!all_payloads().is_empty());
+    }
+
+    #[test]
+    fn all_payloads_larger_than_any_subset() {
+        let all = all_payloads().len();
+        assert!(all > html_payloads().len());
+        assert!(all > js_payloads().len());
+        assert!(all > attribute_payloads().len());
+    }
+
+    #[test]
+    fn get_payloads_for_set_named_sets() {
+        for name in &["html", "attr", "attribute", "js", "poly", "polyglot", "dom", "mxss", "waf"] {
+            assert!(!get_payloads_for_set(name).is_empty(), "empty set for '{}'", name);
+        }
+    }
+
+    #[test]
+    fn get_payloads_for_set_unknown_falls_back_to_all() {
+        assert_eq!(get_payloads_for_set("unknown").len(), all_payloads().len());
+    }
+
+    #[test]
+    fn html_payloads_all_have_html_context() {
+        for p in html_payloads() {
+            assert_eq!(p.context, PayloadContext::Html, "unexpected context for: {}", p.raw);
+        }
+    }
+
+    #[test]
+    fn js_payloads_all_have_js_context() {
+        for p in js_payloads() {
+            assert_eq!(p.context, PayloadContext::JavaScript, "unexpected context for: {}", p.raw);
+        }
+    }
+
+    #[test]
+    fn attribute_payloads_all_have_attribute_context() {
+        for p in attribute_payloads() {
+            assert_eq!(p.context, PayloadContext::Attribute, "unexpected context for: {}", p.raw);
+        }
+    }
+
+    #[test]
+    fn polyglot_payloads_all_have_polyglot_context() {
+        for p in polyglot_payloads() {
+            assert_eq!(p.context, PayloadContext::Polyglot, "unexpected context for: {}", p.raw);
+        }
+    }
+}
+

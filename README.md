@@ -377,12 +377,54 @@ nix-shell
 # Auto-rebuild on changes
 cargo watch -x 'build'
 
-# Run tests
-cargo test
-
 # Lint
 cargo clippy
 ```
+
+### Unit tests
+
+The test suite covers the pure, non-network logic:
+
+- encoding functions
+- reflection context detection
+- payload set membership
+
+Run it with:
+
+```bash
+nix-shell --run "cargo test"
+# or, inside the dev shell:
+cargo test
+```
+
+Run a specific module:
+
+```bash
+cargo test payloads::encoding
+cargo test payloads::generator
+cargo test payloads::tests
+```
+
+Run a single test by name:
+
+```bash
+cargo test url_encode_special_chars
+cargo test detect_context_inside_script_string_double
+```
+
+Show output from passing tests (useful when debugging a specific case):
+
+```bash
+cargo test -- --nocapture
+```
+
+#### What is tested?
+
+| Module | Tests |
+| --- | --- |
+| `payloads::encoding` | `url_encode`, `double_url_encode`, `html_encode`, `unicode_encode`, `base64_encode`, `base64_eval_wrap`, `apply_encodings` |
+| `payloads::generator` | `detect_context` — probe absent, JSON body, `<script>` code/string/template sub-contexts, attribute quote styles, URL attributes, `<title>`, `<textarea>`; `payloads_for_context` non-empty for all major contexts |
+| `payloads` | `all_payloads` non-empty and larger than any subset; `get_payloads_for_set` for every named set and unknown fallback; context invariants for HTML, JS, attribute, and polyglot sets |
 
 ## Legal
 

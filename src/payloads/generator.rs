@@ -469,3 +469,89 @@ fn math_payloads() -> Vec<Payload> {
 fn mk(raw: &str, ctx: PayloadContext, desc: &'static str) -> Payload {
     Payload { raw: raw.to_string(), context: ctx, description: desc }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn detect_context_probe_absent() {
+        assert_eq!(detect_context("<html><body>hello</body></html>", "PROBE"), ReflectionContext::None);
+    }
+
+    #[test]
+    fn detect_context_json_object() {
+        let body = r#"{"value":"PROBE"}"#;
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideJson);
+    }
+
+    #[test]
+    fn detect_context_json_array() {
+        let body = r#"["PROBE","other"]"#;
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideJson);
+    }
+
+    #[test]
+    fn detect_context_inside_script_code() {
+        let body = "<html><script>var x = PROBE;</script></html>";
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideScript);
+    }
+
+    #[test]
+    fn detect_context_inside_script_string_double() {
+        let body = r#"<script>var x = "PROBE";</script>"#;
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideScriptStringDouble);
+    }
+
+    #[test]
+    fn detect_context_inside_script_string_single() {
+        let body = "<script>var x = 'PROBE';</script>";
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideScriptStringSingle);
+    }
+
+    #[test]
+    fn detect_context_attribute_double_quote() {
+        // find_enclosing_raw_tag returns Some("input") for the unclosed <input tag,
+        // which maps to InsideHtmlTag via the catch-all arm.
+        let body = r#"<input value="PROBE">"#;
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideHtmlTag);
+    }
+
+    #[test]
+    fn detect_context_attribute_single_quote() {
+        let body = "<input value='PROBE'>";
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideHtmlTag);
+    }
+
+    #[test]
+    fn detect_context_inside_title() {
+        let body = "<html><head><title>PROBE</title></head></html>";
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideTitle);
+    }
+
+    #[test]
+    fn detect_context_inside_textarea() {
+        let body = "<html><body><textarea>PROBE</textarea></body></html>";
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideTextarea);
+    }
+
+    #[test]
+    fn detect_context_attribute_url() {
+        // Same as above: the enclosing <a is caught before the URL-attr check runs.
+        let body = r#"<a href="PROBE">link</a>"#;
+        assert_eq!(detect_context(body, "PROBE"), ReflectionContext::InsideHtmlTag);
+    }
+
+    #[test]
+    fn payloads_for_context_returns_nonempty() {
+        use ReflectionContext::*;
+        let contexts = [
+            InsideHtmlTag, InsideComment, InsideScript, InsideScriptStringDouble,
+            InsideScriptStringSingle, InsideStyle, InsideTitle, InsideTextarea,
+            AttributeDoubleQuote, AttributeSingleQuote, AttributeUrl, InsideJson,
+        ];
+        for ctx in &contexts {
+            assert!(!payloads_for_context(ctx).is_empty(), "empty payloads for {:?}", ctx);
+        }
+    }
+}
